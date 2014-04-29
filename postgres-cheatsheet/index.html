@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    <title>Postgres cheatsheet</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=99cbacaa1b" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="stylesheet" type="text/css" href="http://yandex.st/highlightjs/8.0/styles/railscasts.min.css" />
+    
+    <meta name="generator" content="Ghost 0.4" />
+<link rel="alternate" type="application/rss+xml" title="Memento" href="../rss/index.html">
+<link rel="canonical" href="http://my-ghost-blog.com/postgres-cheatsheet/" />
+</head>
+<body class="post-template tag-postgres-cheatsheet">
+
+    
+    
+
+
+
+<main class="content" role="main">
+
+    <article class="post tag-postgres-cheatsheet">
+
+        
+        <header class="post-header">
+            <a class="blog-logo" href="http://my-ghost-blog.com">
+                
+                    <span class="blog-title">Memento</span>
+                
+            </a>
+        </header>
+
+        
+        
+
+            <span class="post-meta"><time datetime="2014-04-29">29 Apr 2014</time> on <a href="../tag/postgres-cheatsheet/index.html">postgres cheatsheet</a></span>
+
+            <h1 class="post-title">Postgres cheatsheet</h1>
+
+            <section class="post-content">
+                <p>Shell command starts with <code>$</code> <br />
+Postgres command starts with <code>#</code></p>
+
+<p>List databases from shell:  </p>
+
+<pre><code>$ psql -l
+</code></pre>
+
+<p>Connect to the database postgres:  </p>
+
+<pre><code>$ psql postgres
+</code></pre>
+
+<p>Get postgres command help:  </p>
+
+<pre><code># \?
+</code></pre>
+
+<p>Get all users:  </p>
+
+<pre><code># \du
+</code></pre>
+
+<p>Create a user and set a password:  </p>
+
+<pre><code>$ sudo -u postgres psql postgres
+# \password postgres
+</code></pre>
+
+<p>Create a database:  </p>
+
+<pre><code># create database my_new_db;
+</code></pre>
+
+<p>Connect to database my_db:  </p>
+
+<pre><code>\c my_db
+</code></pre>
+
+<p>Copy result of a request from a client to csv:  </p>
+
+<pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV
+</code></pre>
+
+<p>On heroku:  </p>
+
+<pre><code>psql "dbname=foo host=bar.compute-1.amazonaws.com user=abc password=123 port=5432 sslmode=require"  
+</code></pre>
+
+<p>then run the previous command.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Pierre Lemperiere</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        
+                        
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Postgres%20cheatsheet&amp;url=http://my-ghost-blog.com/postgres-cheatsheet/"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://my-ghost-blog.com/postgres-cheatsheet/"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://my-ghost-blog.com/postgres-cheatsheet/"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+        
+
+    </article>
+
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://my-ghost-blog.com/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="http://my-ghost-blog.com/">Memento</a> &copy; 2014 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+    </footer>
+
+    
+    <script src="../public/jquery.js?v=99cbacaa1b"></script>
+
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=99cbacaa1b"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=99cbacaa1b"></script>
+
+    <script type="text/javascript" src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
