@@ -96,6 +96,11 @@ Postgres command starts with <code>#</code></p>
 <pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV
 </code></pre>
 
+<p>variant:  </p>
+
+<pre><code>$ \copy (SELECT first_name, last_name, email FROM users) TO dump.csv CSV DELIMITER ','
+</code></pre>
+
 <p>On heroku:  </p>
 
 <pre><code>psql "dbname=foo host=bar.compute-1.amazonaws.com user=abc password=123 port=5432 sslmode=require"  
