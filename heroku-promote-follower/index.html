@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     
-    <title>Postgres errors</title>
+    <title>Heroku promote follower</title>
     <meta name="description" content="" />
 
     <meta name="HandheldFriendly" content="True" />
@@ -22,9 +22,9 @@
     
     <meta name="generator" content="Ghost 0.4" />
 <link rel="alternate" type="application/rss+xml" title="Memento" href="../rss/index.html">
-<link rel="canonical" href="http://phazz.github.io/postgres/" />
+<link rel="canonical" href="http://phazz.github.io/heroku-promote-follower/" />
 </head>
-<body class="post-template tag-postgres tag-errors">
+<body class="post-template">
 
     
     
@@ -33,7 +33,7 @@
 
 <main class="content" role="main">
 
-    <article class="post tag-postgres tag-errors">
+    <article class="post">
 
         
         <header class="post-header">
@@ -47,27 +47,39 @@
         
         
 
-            <span class="post-meta"><time datetime="2014-04-29">29 Apr 2014</time> on <a href="../tag/postgres/index.html">postgres</a> | <a href="../tag/errors/index.html">errors</a></span>
+            <span class="post-meta"><time datetime="2014-11-07">07 Nov 2014</time> </span>
 
-            <h1 class="post-title">Postgres errors</h1>
+            <h1 class="post-title">Heroku promote follower</h1>
 
             <section class="post-content">
-                <p>This error occurs when my mac decide to restart unexpectedly:  </p>
+                <p>In case of db down or not available on Heroku, here is the step by step procedure to promote a follower for a 1/2 minute downtime. <br />
+1. <code>$ heroku maintenance:on -a appname</code> <br />
+2. <code>$ heroku ps:scale worker=0 -a appname</code> <br />
+3. <code>$ heroku pg:info -a appname</code></p>
 
-<pre><code>psql: could not connect to server: No such file or directory  
-    Is the server running locally and accepting
-    connections on Unix domain socket "/tmp/.s.PGSQL.5432"?
-</code></pre>
+<p>Identify the name of the follower database. <br />
+A database name followed by (DATABASE_URL) is the production database. In its description the follower is specified. <br />
+HEROKU_POSTGRESQL_RED (DATABASE_URL) <br />
+... <br />
+Followers:   HEROKU_POSTGRESQL_GREEN</p>
 
-<p>I solve that by doing:</p>
+<p>Warning the step 4 is critical! <br />
+4. <code>$ heroku pg:unfollow HEROKU_POSTGRESQL_GREEN_URL -a appname</code> <br />
+5. <code>$ heroku pg:promote HEROKU_POSTGRESQL_GREEN_URL -a appname</code></p>
 
-<pre><code>rm /usr/local/var/postgres/postmaster.pid  
-</code></pre>
+<p>Put the app back up <br />
+6. <code>$ heroku ps:scale worker=2 -a appname</code> <br />
+7. <code>$ heroku maintenance:off -a appname</code></p>
 
-<p>Then restart the server:  </p>
+<p>Create another follower <br />
+8. <code>$ heroku addons:add heroku-postgresql:standard-0 --follow HEROKU_POSTGRESQL_GREEN_URL --app appname</code> <br />
+Wait for it to come up <br />
+9. <code>$ heroku pg:wait -a appname</code></p>
 
-<pre><code>lunchy restart postgres  
-</code></pre>
+<p>Teardown <br />
+10. <code>$ heroku addons:remove HEROKU_POSTGRESQL_RED</code></p>
+
+<p><a href="https://devcenter.heroku.com/articles/upgrading-heroku-postgres-databases#upgrade-with-follower-changeovers">Documentation Heroku upgrade follower</a></p>
             </section>
 
             <footer class="post-footer">
@@ -83,15 +95,15 @@
 
                 <section class="share">
                     <h4>Share this post</h4>
-                    <a class="icon-twitter" href="https://twitter.com/share?text=Postgres%20errors&amp;url=http://phazz.github.io/postgres/"
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Heroku%20promote%20follower&amp;url=http://phazz.github.io/heroku-promote-follower/"
                         onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                         <span class="hidden">Twitter</span>
                     </a>
-                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://phazz.github.io/postgres/"
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://phazz.github.io/heroku-promote-follower/"
                         onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                         <span class="hidden">Facebook</span>
                     </a>
-                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://phazz.github.io/postgres/"
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://phazz.github.io/heroku-promote-follower/"
                        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                         <span class="hidden">Google+</span>
                     </a>

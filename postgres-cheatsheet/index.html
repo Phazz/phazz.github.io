@@ -15,14 +15,14 @@
     <link rel="shortcut icon" href="../favicon.ico">
 
     
-    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=99cbacaa1b" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=625ae55c1e" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
 
     <link rel="stylesheet" type="text/css" href="http://yandex.st/highlightjs/8.0/styles/railscasts.min.css" />
     
     <meta name="generator" content="Ghost 0.4" />
 <link rel="alternate" type="application/rss+xml" title="Memento" href="../rss/index.html">
-<link rel="canonical" href="http://my-ghost-blog.com/postgres-cheatsheet/" />
+<link rel="canonical" href="http://phazz.github.io/postgres-cheatsheet/" />
 </head>
 <body class="post-template tag-postgres-cheatsheet">
 
@@ -37,7 +37,7 @@
 
         
         <header class="post-header">
-            <a class="blog-logo" href="http://my-ghost-blog.com">
+            <a class="blog-logo" href="http://phazz.github.io">
                 
                     <span class="blog-title">Memento</span>
                 
@@ -91,9 +91,19 @@ Postgres command starts with <code>#</code></p>
 <pre><code>\c my_db
 </code></pre>
 
-<p>Copy result of a request from a client to csv:  </p>
+<p>List tables:  </p>
 
-<pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV
+<pre><code># \d
+</code></pre>
+
+<p>List columns of a table:  </p>
+
+<pre><code># \d+ table_name
+</code></pre>
+
+<p>Copy result of a request to csv:  </p>
+
+<pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV HEADER
 </code></pre>
 
 <p>variant:  </p>
@@ -103,7 +113,7 @@ Postgres command starts with <code>#</code></p>
 
 <p><a href="http://www.postgresql.org/docs/current/interactive/app-psql.html#APP-PSQL-META-COMMANDS-COPY">Postgres copy documentation.</a></p>
 
-<p>On heroku:  </p>
+<h3 id="onheroku">On heroku:</h3>
 
 <pre><code>psql "dbname=foo host=bar.compute-1.amazonaws.com user=abc password=123 port=5432 sslmode=require"  
 </code></pre>
@@ -113,7 +123,18 @@ Postgres command starts with <code>#</code></p>
 <pre><code>$ heroku pg:psql
 </code></pre>
 
-<p>then run the previous command.</p>
+<p>then run a <code>\copy</code> command command. <br />
+Your file will be created at the specified path locally.</p>
+
+<p>Create a db from shell:  </p>
+
+<pre><code>createdb dbname  
+</code></pre>
+
+<p>Delete a db from shell  </p>
+
+<pre><code>dropdb dbname  
+</code></pre>
             </section>
 
             <footer class="post-footer">
@@ -129,15 +150,15 @@ Postgres command starts with <code>#</code></p>
 
                 <section class="share">
                     <h4>Share this post</h4>
-                    <a class="icon-twitter" href="https://twitter.com/share?text=Postgres%20cheatsheet&amp;url=http://my-ghost-blog.com/postgres-cheatsheet/"
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Postgres%20cheatsheet&amp;url=http://phazz.github.io/postgres-cheatsheet/"
                         onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                         <span class="hidden">Twitter</span>
                     </a>
-                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://my-ghost-blog.com/postgres-cheatsheet/"
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://phazz.github.io/postgres-cheatsheet/"
                         onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                         <span class="hidden">Facebook</span>
                     </a>
-                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://my-ghost-blog.com/postgres-cheatsheet/"
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://phazz.github.io/postgres-cheatsheet/"
                        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                         <span class="hidden">Google+</span>
                     </a>
@@ -153,19 +174,19 @@ Postgres command starts with <code>#</code></p>
 
 
     <footer class="site-footer">
-        <a class="subscribe icon-feed" href="http://my-ghost-blog.com/rss/"><span class="tooltip">Subscribe!</span></a>
+        <a class="subscribe icon-feed" href="http://phazz.github.io/rss/"><span class="tooltip">Subscribe!</span></a>
         <div class="inner">
-             <section class="copyright">All content copyright <a href="http://my-ghost-blog.com/">Memento</a> &copy; 2014 &bull; All rights reserved.</section>
+             <section class="copyright">All content copyright <a href="http://phazz.github.io/">Memento</a> &copy; 2014 &bull; All rights reserved.</section>
              <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
         </div>
     </footer>
 
     
-    <script src="../public/jquery.js?v=99cbacaa1b"></script>
+    <script src="../public/jquery.js?v=625ae55c1e"></script>
 
     
-    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=99cbacaa1b"></script>
-    <script type="text/javascript" src="../assets/js/index.js?v=99cbacaa1b"></script>
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=625ae55c1e"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=625ae55c1e"></script>
 
     <script type="text/javascript" src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>

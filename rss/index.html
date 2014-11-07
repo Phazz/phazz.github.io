@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Memento]]></title><description><![CDATA[This blog is my memento around ruby, rails, machine learning and software development.]]></description><link>http://my-ghost-blog.com/</link><generator>Ghost v0.4.2</generator><lastBuildDate>Tue, 29 Apr 2014 14:01:49 GMT</lastBuildDate><atom:link href="http://my-ghost-blog.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Postgres errors]]></title><description><![CDATA[<p>This error occurs when my mac decide to restart unexpectedly:  </p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Memento]]></title><description><![CDATA[This blog is my memento around ruby, rails, machine learning and software development.]]></description><link>http://phazz.github.io/</link><generator>Ghost v0.4.2</generator><lastBuildDate>Fri, 07 Nov 2014 11:22:05 GMT</lastBuildDate><atom:link href="http://phazz.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Heroku promote follower]]></title><description><![CDATA[<p>In case of db down or not available on Heroku, here is the step by step procedure to promote a follower for a 1/2 minute downtime. <br />
+1. <code>$ heroku maintenance:on -a appname</code> <br />
+2. <code>$ heroku ps:scale worker=0 -a appname</code> <br />
+3. <code>$ heroku pg:info -a appname</code></p>
+
+<p>Identify the name of the follower database. <br />
+A database name followed by (DATABASE_URL) is the production database. In its description the follower is specified. <br />
+HEROKU_POSTGRESQL_RED (DATABASE_URL) <br />
+... <br />
+Followers:   HEROKU_POSTGRESQL_GREEN</p>
+
+<p>Warning the step 4 is critical! <br />
+4. <code>$ heroku pg:unfollow HEROKU_POSTGRESQL_GREEN_URL -a appname</code> <br />
+5. <code>$ heroku pg:promote HEROKU_POSTGRESQL_GREEN_URL -a appname</code></p>
+
+<p>Put the app back up <br />
+6. <code>$ heroku ps:scale worker=2 -a appname</code> <br />
+7. <code>$ heroku maintenance:off -a appname</code></p>
+
+<p>Create another follower <br />
+8. <code>$ heroku addons:add heroku-postgresql:standard-0 --follow HEROKU_POSTGRESQL_GREEN_URL --app appname</code> <br />
+Wait for it to come up <br />
+9. <code>$ heroku pg:wait -a appname</code></p>
+
+<p>Teardown <br />
+10. <code>$ heroku addons:remove HEROKU_POSTGRESQL_RED</code></p>
+
+<p><a href='https://devcenter.heroku.com/articles/upgrading-heroku-postgres-databases' #upgrade-with-follower-changeovers">Documentation Heroku upgrade follower</a></p>]]></description><link>http://phazz.github.io/heroku-promote-follower/</link><guid isPermaLink="false">d64d43e8-166e-4881-961a-d2434d16324a</guid><dc:creator><![CDATA[Pierre Lemperiere]]></dc:creator><pubDate>Fri, 07 Nov 2014 11:19:57 GMT</pubDate></item><item><title><![CDATA[Postgres errors]]></title><description><![CDATA[<p>This error occurs when my mac decide to restart unexpectedly:  </p>
 
 <pre><code>psql: could not connect to server: No such file or directory  
     Is the server running locally and accepting
@@ -14,7 +41,7 @@
 <p>Then restart the server:  </p>
 
 <pre><code>lunchy restart postgres  
-</code></pre>]]></description><link>http://my-ghost-blog.com/postgres/</link><guid isPermaLink="false">93f852ea-0baa-4c7d-858b-2b8a16edd735</guid><category><![CDATA[postgres]]></category><category><![CDATA[errors]]></category><dc:creator><![CDATA[Pierre Lemperiere]]></dc:creator><pubDate>Tue, 29 Apr 2014 10:10:53 GMT</pubDate></item><item><title><![CDATA[Postgres cheatsheet]]></title><description><![CDATA[<p>Shell command starts with <code>$</code> <br />
+</code></pre>]]></description><link>http://phazz.github.io/postgres/</link><guid isPermaLink="false">93f852ea-0baa-4c7d-858b-2b8a16edd735</guid><category><![CDATA[postgres]]></category><category><![CDATA[errors]]></category><dc:creator><![CDATA[Pierre Lemperiere]]></dc:creator><pubDate>Tue, 29 Apr 2014 10:10:53 GMT</pubDate></item><item><title><![CDATA[Postgres cheatsheet]]></title><description><![CDATA[<p>Shell command starts with <code>$</code> <br />
 Postgres command starts with <code>#</code></p>
 
 <p>List databases from shell:  </p>
@@ -53,9 +80,19 @@ Postgres command starts with <code>#</code></p>
 <pre><code>\c my_db
 </code></pre>
 
-<p>Copy result of a request from a client to csv:  </p>
+<p>List tables:  </p>
 
-<pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV
+<pre><code># \d
+</code></pre>
+
+<p>List columns of a table:  </p>
+
+<pre><code># \d+ table_name
+</code></pre>
+
+<p>Copy result of a request to csv:  </p>
+
+<pre><code>$ \copy (Select * From foo) To '/tmp/test.csv' With CSV HEADER
 </code></pre>
 
 <p>variant:  </p>
@@ -65,7 +102,7 @@ Postgres command starts with <code>#</code></p>
 
 <p><a href='http://www.postgresql.org/docs/current/interactive/app-psql.html' #APP-PSQL-META-COMMANDS-COPY">Postgres copy documentation.</a></p>
 
-<p>On heroku:  </p>
+<h3 id="onheroku">On heroku:</h3>
 
 <pre><code>psql "dbname=foo host=bar.compute-1.amazonaws.com user=abc password=123 port=5432 sslmode=require"  
 </code></pre>
@@ -75,4 +112,15 @@ Postgres command starts with <code>#</code></p>
 <pre><code>$ heroku pg:psql
 </code></pre>
 
-<p>then run the previous command.</p>]]></description><link>http://my-ghost-blog.com/postgres-cheatsheet/</link><guid isPermaLink="false">cc5e2d0a-ce45-4b61-b264-5c83c4380066</guid><category><![CDATA[postgres cheatsheet]]></category><dc:creator><![CDATA[Pierre Lemperiere]]></dc:creator><pubDate>Tue, 29 Apr 2014 10:10:41 GMT</pubDate></item></channel></rss>
+<p>then run a <code>\copy</code> command command. <br />
+Your file will be created at the specified path locally.</p>
+
+<p>Create a db from shell:  </p>
+
+<pre><code>createdb dbname  
+</code></pre>
+
+<p>Delete a db from shell  </p>
+
+<pre><code>dropdb dbname  
+</code></pre>]]></description><link>http://phazz.github.io/postgres-cheatsheet/</link><guid isPermaLink="false">cc5e2d0a-ce45-4b61-b264-5c83c4380066</guid><category><![CDATA[postgres cheatsheet]]></category><dc:creator><![CDATA[Pierre Lemperiere]]></dc:creator><pubDate>Tue, 29 Apr 2014 10:10:41 GMT</pubDate></item></channel></rss>
